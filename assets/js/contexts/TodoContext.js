@@ -7,7 +7,7 @@ class TodoContextProvider extends Component {
     super(props);
     this.createTodo = this.createTodo.bind(this);
     this.updateTodo = this.updateTodo.bind(this);
-    // this.deleteTodo = this.deleteTodo().bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
     this.state = {
       todos: [
         {id: 0, name: 'do something'},
@@ -37,6 +37,7 @@ class TodoContextProvider extends Component {
   }
   // update
   updateTodo(data) {
+    console.log('updating');
     let todos = [...this.state.todos];
     let todo = todos.find(todo => {
       return todo.id === data.id
@@ -50,18 +51,27 @@ class TodoContextProvider extends Component {
 
   }
   // delete
-  deleteTodo() {
+  deleteTodo(data) {
     console.log('deleting');
+    let todos = [...this.state.todos];
+    let todo = todos.find(todo => {
+      return todo.id === data.id;
+    })
+
+    todos.splice(todos.indexOf(todo), 1);
+
+    this.setState({
+      todos: todos,
+    });
   }
 
-  
   render() {
     return (
       <TodoContext.Provider value={{
         ...this.state,
         createTodo: this.createTodo,
         updateTodo: this.updateTodo,
-        // deleteTodo: this.deleteTodo(),
+        deleteTodo: this.deleteTodo,
       }}>
         {this.props.children}
       </TodoContext.Provider>
